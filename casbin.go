@@ -13,12 +13,14 @@ import (
 	"go.uber.org/zap"
 )
 
-func CasbinCheck() gin.HandlerFunc {
+func CasbinCheck(pathPrefix string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		pathPrefix := "/v1"
 		auth := c.MustGet("JwtAuth").(*config.JwtClaims)
 		sub := auth.ID
-		obj := strings.Replace(c.Request.URL.RequestURI(), pathPrefix, "", 1)
+		obj := c.Request.URL.RequestURI()
+		if pathPrefix != "" {
+			obj = strings.Replace(obj, pathPrefix, "", 1)
+		}
 		act := "request"
 
 		logger.Debug("[Casbin]", zap.Any("sub", sub))
