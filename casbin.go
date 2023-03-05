@@ -16,7 +16,7 @@ import (
 func CasbinCheck(pathPrefix string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		auth := c.MustGet("JwtAuth").(*config.JwtClaims)
-		sub := auth.ID
+		sub := auth.Username
 		obj := c.Request.URL.RequestURI()
 		if pathPrefix != "" {
 			obj = strings.Replace(obj, pathPrefix, "", 1)
