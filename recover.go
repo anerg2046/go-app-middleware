@@ -33,14 +33,14 @@ func Recover(c *gin.Context) {
 			httpRequest, _ := httputil.DumpRequest(c.Request, false)
 			// 链接中断的情况
 			if brokenPipe {
-				// logger.Error(c.Request.URL.Path,
-				// 	zap.Any("error", err),
-				// 	zap.String("request", string(httpRequest)),
-				// )
-				// c.Error(err.(error))
-				// c.Abort()
-				// // 链接已断开，无法写状态码
-				// return
+				logger.Error(c.Request.URL.Path,
+					zap.Any("error", err),
+					zap.String("request", string(httpRequest)),
+				)
+				c.Error(err.(error))
+				c.Abort()
+				// 链接已断开，无法写状态码
+				return
 			}
 
 			// 如果不是链接中断，就开始记录堆栈信息
